@@ -1,24 +1,29 @@
-import { RecoilRoot, useRecoilValue } from "recoil";
-import { myNetworkAtom, jobsAtom, messagingAtom, notificationsAtom, totalCountSelector } from "./content";
+import { RecoilRoot, useRecoilValue,useRecoilState } from "recoil";
+import {axios} from "react"
+import { notifications, totalNotifications } from "./content";
+import { useEffect } from "react";
 function App(){
  return <RecoilRoot>
     <MainApp/>
  </RecoilRoot>
 }
 function MainApp(){
-  const newNetwork=useRecoilValue(myNetworkAtom);
-  const newJobs=useRecoilValue(jobsAtom);
-  const newMessaging = useRecoilValue(messagingAtom);
-  const newNotifications = useRecoilValue(notificationsAtom);
-  const newTotalCount = useRecoilValue(totalCountSelector);
+  const [networkCount,setNetworkCount]=useRecoilState(notifications);
+  const totalNotificationsSelector = useRecoilValue(totalNotifications);
+  useEffect(()=>{
+  axios.get("https://sum-server.100xdevs.com/notifications").then((res) =>{
+    setNetworkCount(res.data);
+  });
+ },[]);
+
   return(
     <div>
   <button>Home</button>
-  <button>My Network({newNetwork >= 100 ? "99+" : newNetwork})</button>
-  <button>Jobs({newJobs >= 100 ? "99+" : newJobs})</button>
-  <button>Messaging({newMessaging >= 100 ? "99+" : newMessaging})</button>
-  <button>Notifications({newNotifications >= 100 ? "99+" : newNotifications})</button>
-  <button>Me({newTotalCount})</button>
+  <button>My Network({networkCount.network >= 100 ? "99+" : networkCount.network})</button>
+  <button>Jobs({networkCount.jobs >= 100 ? "99+" : networkCount.jobs})</button>
+  <button>Messaging({networkCount.messaging >= 100 ? "99+" : networkCount.messaging})</button>
+  <button>Notifications({networkCount.notifications >= 100 ? "99+" : networkCount.notifications})</button>
+  <button>Me({totalNotificationsSelector})</button>
   </div>
   )
 }
