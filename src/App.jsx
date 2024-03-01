@@ -1,58 +1,25 @@
-import { useContext, useMemo, useState } from "react"
-import { CountContext } from "./context";
-import { RecoilRoot, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { countAtom, evenSelector } from "./store/atoms/count";
-
-function App() {
-  return (
+import { RecoilRoot, useRecoilValue } from "recoil";
+import { myNetworkAtom, jobsAtom, messagingAtom, notificationsAtom, totalCountSelector } from "./content";
+function App(){
+ return <RecoilRoot>
+    <MainApp/>
+ </RecoilRoot>
+}
+function MainApp(){
+  const newNetwork=useRecoilValue(myNetworkAtom);
+  const newJobs=useRecoilValue(jobsAtom);
+  const newMessaging = useRecoilValue(messagingAtom);
+  const newNotifications = useRecoilValue(notificationsAtom);
+  const newTotalCount = useRecoilValue(totalCountSelector);
+  return(
     <div>
-      <RecoilRoot>
-        <Count />
-      </RecoilRoot>
-    </div>
+  <button>Home</button>
+  <button>My Network({newNetwork >= 100 ? "99+" : newNetwork})</button>
+  <button>Jobs({newJobs >= 100 ? "99+" : newJobs})</button>
+  <button>Messaging({newMessaging >= 100 ? "99+" : newMessaging})</button>
+  <button>Notifications({newNotifications >= 100 ? "99+" : newNotifications})</button>
+  <button>Me({newTotalCount})</button>
+  </div>
   )
 }
-
-function Count() {
-  console.log("re-render");
-  return <div>
-    <CountRenderer />
-    <Buttons />
-  </div>
-}
-
-function CountRenderer() {
-  const count = useRecoilValue(countAtom);
-  
-  return <div>
-    <b>
-      {count}
-    </b>
-    <EvenCountRenderer />
-  </div>
-}
-
-function EvenCountRenderer() {
-  const isEven = useRecoilValue(evenSelector);
-
-  return <div>
-    {isEven ? "It is even" : null}
-  </div>
-}
-
-function Buttons() {
-  const setCount = useSetRecoilState(countAtom);
-  console.log("buttons re-rendererd");
-
-  return <div>
-    <button onClick={() => {
-      setCount(count => count + 1)
-    }}>Increase</button>
-
-    <button onClick={() => {
-      setCount(count => count - 1)
-    }}>Decrease</button>
-  </div>
-}
-
-export default App
+export default App;
