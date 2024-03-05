@@ -1,7 +1,5 @@
-import { RecoilRoot, useRecoilValue,useRecoilState } from "recoil";
-import {axios} from "react"
+import { RecoilRoot, useRecoilValue, useRecoilState } from "recoil";
 import { notifications, totalNotifications } from "./content";
-import { useEffect } from "react";
 function App(){
  return <RecoilRoot>
     <MainApp/>
@@ -10,11 +8,6 @@ function App(){
 function MainApp(){
   const [networkCount,setNetworkCount]=useRecoilState(notifications);
   const totalNotificationsSelector = useRecoilValue(totalNotifications);
-  useEffect(()=>{
-  axios.get("https://sum-server.100xdevs.com/notifications").then((res) =>{
-    setNetworkCount(res.data);
-  });
- },[]);
 
   return(
     <div>
