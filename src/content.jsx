@@ -6,7 +6,6 @@ export const notifications= atom({
     default : selector({
         key : "networkCountSelector",
         get : async ()=>{
-            await new Promise(e =>{setTimeout(e,5000)})
             const res = await axios.get("https://sum-server.100xdevs.com/notifications")
             return res.data;
         }
