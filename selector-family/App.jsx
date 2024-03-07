@@ -1,5 +1,5 @@
 import { todoAtomFamily } from "./atom";
-import { RecoilRoot , useRecoilState, useRecoilState } from "recoil";
+import { RecoilRoot , useRecoilState } from "recoil";
 function App(){
     return <>
     <RecoilRoot>
@@ -17,3 +17,4 @@ return (
     </div>
 )
 }
+export default App;
